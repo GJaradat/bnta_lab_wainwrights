@@ -5,7 +5,10 @@ const getAllWainwrights = async (filterInput) => {
     //Filter out wainwrights from the keyword input OR get all wainwrights
     if (filterInput){
         var jsonData = jsonDataAll.filter((wainwright) => {
-            return wainwright.area.areaName.includes(filterInput);
+            return wainwright.name.toLowerCase().includes(filterInput.toLowerCase())||
+            wainwright.area.areaName.includes(filterInput.toLowerCase())||
+            wainwright.area.localTowns.includes(filterInput.toLowerCase()) ||
+            wainwright.area.about.includes(filterInput.toLowerCase());
         })
     } else {
         var jsonData = jsonDataAll;
@@ -13,26 +16,7 @@ const getAllWainwrights = async (filterInput) => {
 
     //Display wainwrights as elements
     jsonData.forEach((wainwright) => {
-        const currentWainwright = document.createElement("li");
-        currentWainwright.id = "wainwright-" + wainwright.id;
-        const wainwrightDetails = document.createElement("p");
-        wainwrightDetails.class = "wainwrightDetails";
-        const info = "Height: " + wainwright.heightMetres + "m | " 
-                    + "Area: " + wainwright.area.areaName + " | "
-                    + "Nearby towns: " + wainwright.area.localTowns
-                    ;
-
-        const about = document.createElement("p");
-        about.class = "wainwrightAbout";
-        about.innerHTML = wainwright.area.about;
-
-        currentWainwright.innerHTML = wainwright.name;
-        wainwrightDetails.innerHTML = info;
-
-        //Append elements
-        document.querySelector("#wainwrights-list").appendChild(currentWainwright);
-        document.querySelector(`[id="wainwright-${wainwright.id}"]`).appendChild(wainwrightDetails);
-        document.querySelector(`[id="wainwright-${wainwright.id}"]`).appendChild(about);
+        displayWainwright(wainwright);
     })
 
     return jsonData;
@@ -52,3 +36,27 @@ form.addEventListener("submit", (event) => {
     }
 
 });
+
+// Display wainwright
+const displayWainwright = (wainwright) => {
+    const currentWainwright = document.createElement("li");
+    currentWainwright.id = "wainwright-" + wainwright.id;
+    const wainwrightDetails = document.createElement("p");
+    wainwrightDetails.class = "wainwrightDetails";
+    const info = "Height: " + wainwright.heightMetres + "m | " 
+                + "Area: " + wainwright.area.areaName + " | "
+                + "Nearby towns: " + wainwright.area.localTowns
+                ;
+
+    const about = document.createElement("p");
+    about.class = "wainwrightAbout";
+    about.innerHTML = wainwright.area.about;
+
+    currentWainwright.innerHTML = wainwright.name;
+    wainwrightDetails.innerHTML = info;
+
+    //Append elements
+    document.querySelector("#wainwrights-list").appendChild(currentWainwright);
+    document.querySelector(`[id="wainwright-${wainwright.id}"]`).appendChild(wainwrightDetails);
+    document.querySelector(`[id="wainwright-${wainwright.id}"]`).appendChild(about);
+}

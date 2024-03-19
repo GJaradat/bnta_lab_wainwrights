@@ -1,14 +1,18 @@
+// Fetch wainwrights from API
+var fetchData = async () => {
+    const response = await fetch ("https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/wainwrights_data/wainwrights.json");
+    jsonDataAll = await response.json();
+    return jsonDataAll;
+}
+// make this global scope: can use var/window/globalThis
+globalThis.jsonDataAll = fetchData();
+
+// Get all wainwrights on page
 const getAllWainwrights = async (filterInput) => {
-    // Trying to limit the API calls to only when the data is needed. I don't think it works though...
-    if (typeof jsonDataAll === "undefined") {
-        const response = await fetch ("https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/wainwrights_data/wainwrights.json");
-        var jsonDataAll = await response.json();
-        console.log("API was called");
-    }
 
     //Filter out wainwrights from the keyword input OR get all wainwrights
     if (filterInput){
-        var jsonData = filterWainwrights(jsonDataAll, filterInput);
+        var jsonData = filterWainwrights(filterInput);
     } else {
         var jsonData = jsonDataAll;
     }
@@ -30,7 +34,7 @@ form.addEventListener("submit", (event) => {
     getAllWainwrights(filterInput);
 });
 
-// Display a wainwright (TO-DO: Could be changed into a Promise.all)
+// Display each wainwright
 const displayWainwright = (wainwright) => {
     const currentWainwright = document.createElement("li");
     currentWainwright.id = "wainwright-" + wainwright.id;
@@ -59,7 +63,7 @@ const displayWainwright = (wainwright) => {
 }
 
 // Filter wainwrights
-const filterWainwrights = (jsonDataAll, filterInput) => {
+const filterWainwrights = (filterInput) => {
     return jsonData = jsonDataAll.filter((wainwright) => {
         return wainwright.name.toLowerCase().includes(filterInput.toLowerCase())||
         wainwright.area.areaName.includes(filterInput.toLowerCase())||

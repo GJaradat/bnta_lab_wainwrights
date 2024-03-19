@@ -1,7 +1,11 @@
 // Fetch wainwrights from API
 var fetchData = async () => {
+    try{
     const response = await fetch ("https://raw.githubusercontent.com/annahndr/annahndr.github.io/master/wainwrights_data/wainwrights.json");
     jsonDataAll = await response.json();
+    } catch (error) {
+        document.querySelector("#wainwrights-heading").innerHTML = "Error: API endpoint not found";
+    }
     return jsonDataAll;
 }
 // make this global scope: can use var/window/globalThis
@@ -11,7 +15,7 @@ globalThis.jsonDataAll = fetchData();
 const getAllWainwrights = async (filterInput) => {
 
     //Dynamic heading
-    await waitForResults(5000);
+    await waitForResults(500);
 
     //Filter out wainwrights from the keyword input OR get all wainwrights
     if (filterInput){

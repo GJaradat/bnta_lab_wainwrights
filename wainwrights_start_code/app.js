@@ -15,21 +15,24 @@ const getAllWainwrights = async (filterInput) => {
     jsonData.forEach((wainwright) => {
         const currentWainwright = document.createElement("li");
         currentWainwright.id = "wainwright-" + wainwright.id;
-        const wainwrightText = document.createElement("p");
-        const info = "Height: " + wainwright.heightMetres + " | " 
+        const wainwrightDetails = document.createElement("p");
+        wainwrightDetails.class = "wainwrightDetails";
+        const info = "Height: " + wainwright.heightMetres + "m | " 
                     + "Area: " + wainwright.area.areaName + " | "
                     + "Nearby towns: " + wainwright.area.localTowns
                     ;
 
         const about = document.createElement("p");
+        about.class = "wainwrightAbout";
         about.innerHTML = wainwright.area.about;
-        currentWainwright.innerHTML = wainwright.name;
-        wainwrightText.innerHTML = info;
 
-        console.log(wainwright);
+        currentWainwright.innerHTML = wainwright.name;
+        wainwrightDetails.innerHTML = info;
+
+        //Append elements
         document.querySelector("#wainwrights-list").appendChild(currentWainwright);
-        document.querySelector("#wainwrights-${wainwright.id}").appendChild(wainwrightText);
-        document.querySelector("#wainwrights-${wainwright.id}").appendChild(about);
+        document.querySelector(`[id="wainwright-${wainwright.id}"]`).appendChild(wainwrightDetails);
+        document.querySelector(`[id="wainwright-${wainwright.id}"]`).appendChild(about);
     })
 
     return jsonData;

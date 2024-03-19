@@ -10,6 +10,9 @@ globalThis.jsonDataAll = fetchData();
 // Get all wainwrights on page
 const getAllWainwrights = async (filterInput) => {
 
+    //Dynamic heading
+    await waitForResults(5000);
+
     //Filter out wainwrights from the keyword input OR get all wainwrights
     if (filterInput){
         var jsonData = filterWainwrights(filterInput);
@@ -70,4 +73,34 @@ const filterWainwrights = (filterInput) => {
         wainwright.area.localTowns.includes(filterInput.toLowerCase()) ||
         wainwright.area.about.includes(filterInput.toLowerCase());
     })
+}
+
+// Delaying function
+const delay = (time) => {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+// Wait for results to load
+const waitForResults = async (time) => {
+    // "Animate" loading message
+    loadingMessage(time);
+
+    // Artificial delay
+    await delay(time);
+    document.querySelector("#wainwrights-heading").innerHTML = "List of Wainwrights:"
+}
+
+// Animate loading message
+const loadingMessage = async (time) => {
+    let dots = "";
+    let timer = 0;
+    while (timer < time) {
+        dots += ".";
+        document.querySelector("#wainwrights-heading").innerHTML = "List of Wainwrights: Loading" + dots;
+        await delay(500);
+        if (dots == "....") {
+            dots = "";
+        }
+        timer += 500;
+    }
 }

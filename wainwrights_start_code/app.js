@@ -15,7 +15,7 @@ globalThis.jsonDataAll = fetchData();
 const getAllWainwrights = async (filterInput) => {
 
     //Dynamic heading
-    await waitForResults(500);
+    await waitForResults(5000);
 
     //Filter out wainwrights from the keyword input OR get all wainwrights
     if (filterInput){
